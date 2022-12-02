@@ -1,3 +1,5 @@
+const uuid = require("uuid");
+
 const HttpError = require("../models/http-error");
 
 const DUMMY_PLACES = [
@@ -40,5 +42,32 @@ const getPlaceByUserId = (req, res, next) => {
   res.json({ place });
 };
 
+const createPlace = (req, res, next) => {
+  const { title, description, coordinates, address, creator } = req.body;
+  const createdPlace = {
+    id: uuid.v4(),
+    title,
+    description,
+    location: coordinates,
+    address,
+    creator,
+  };
+  DUMMY_PLACES.push(createdPlace);
+
+  res.status(201).json({ place: createdPlace });
+};
+
 exports.getPlaceById = getPlaceById;
 exports.getPlaceByUserId = getPlaceByUserId;
+exports.createPlace = createPlace;
+
+// {
+//   "title": "New York Stock Exchange",
+//   "description": "Where the money lives.",
+//   "creator": "u2",
+//   "address": "11 Wall St, New York, NY 10005",
+//   "coordinates": {
+//       "lat": 40.7063069,
+//       "lng": -74.010329
+//   }
+// }
