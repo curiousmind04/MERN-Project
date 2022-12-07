@@ -11,7 +11,7 @@ const PlaceList = (props) => {
   const auth = useContext(AuthContext);
   const userId = useParams().userId;
 
-  if (auth.isLoggedIn && auth.userId !== userId) {
+  if (auth.isLoggedIn && auth.userId !== userId && props.items.length === 0) {
     return (
       <div className="place-list center">
         <Card>
