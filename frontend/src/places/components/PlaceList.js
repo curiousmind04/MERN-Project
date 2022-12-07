@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useParams } from "react-router-dom";
 
 import Button from "../../shared/components/FormElements/Button";
 import Card from "../../shared/components/UIElements/Card";
+import { AuthContext } from "../../shared/context/auth-context";
 import PlaceItem from "./PlaceItem";
 import "./PlaceList.css";
 
 const PlaceList = (props) => {
+  const auth = useContext(AuthContext);
+  const userId = useParams().userId;
+
+  if (auth.isLoggedIn && auth.userId !== userId) {
+    return (
+      <div className="place-list center">
+        <Card>
+          <h2>This user does not have any places.</h2>
+        </Card>
+      </div>
+    );
+  }
+
   if (props.items.length === 0) {
     return (
       <div className="place-list center">
@@ -29,6 +44,7 @@ const PlaceList = (props) => {
           address={place.address}
           creatorId={place.creator}
           coordinates={place.location}
+          onDelete={props.onDeletePlace}
         />
       ))}
     </ul>
