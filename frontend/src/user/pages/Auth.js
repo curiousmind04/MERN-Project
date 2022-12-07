@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 
 import Button from "../../shared/components/FormElements/Button";
+import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 import Input from "../../shared/components/FormElements/Input";
 import Card from "../../shared/components/UIElements/Card";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
@@ -31,12 +32,16 @@ const Auth = () => {
   const switchModeHandler = () => {
     if (!isLoginMode) {
       setFormData(
-        { ...formState.inputs, name: undefined },
+        { ...formState.inputs, name: undefined, image: undefined },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
     } else {
       setFormData(
-        { ...formState.inputs, name: { value: "", isValid: false } },
+        {
+          ...formState.inputs,
+          name: { value: "", isValid: false },
+          image: { value: null, isValid: false },
+        },
         false
       );
     }
@@ -45,6 +50,8 @@ const Auth = () => {
 
   const authSubmitHandler = async (event) => {
     event.preventDefault();
+
+    console.log(formState.inputs);
 
     if (isLoginMode) {
       try {
@@ -98,6 +105,9 @@ const Auth = () => {
               errorText="Please enter a name."
               onInput={inputHandler}
             />
+          )}
+          {!isLoginMode && (
+            <ImageUpload center id="image" onInput={inputHandler} />
           )}
           <Input
             element="input"
